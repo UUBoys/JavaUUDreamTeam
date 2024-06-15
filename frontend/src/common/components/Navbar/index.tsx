@@ -37,7 +37,7 @@ const Navbar = () => {
   return (
     <div className="fixed left-[5%] top-0 mt-6 flex w-[90%] items-center justify-between rounded-md bg-white px-8 py-2 shadow-md">
       {/* eslint-disable-next-line react/no-unescaped-entities */}
-      <h1 className="font-bold text-primary">DocO'Clock</h1>
+      <h1 onClick={() => push("/")} className="font-bold cursor-pointer text-primary text-[25px]">EL HOSPITAL</h1>
       <div className="flex items-center gap-8">
         {links.map((link) => (
           <button
