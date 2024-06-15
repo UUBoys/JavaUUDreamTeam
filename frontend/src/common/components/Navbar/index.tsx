@@ -37,7 +37,7 @@ const Navbar = () => {
   };
 
   useEffect(() => {
-    setCurrentUrl(asPath);
+    if (asPath) setCurrentUrl(asPath);
   }, [asPath]);
 
   return (
