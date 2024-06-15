@@ -20,7 +20,7 @@ const queryClient = new QueryClient({
 });
 
 const App = ({ Component, pageProps }: AppProps) => {
-  for (let i = 0; i < 10000; i++) {
+  for (let i = 0; i < 100000; i++) {
     console.log(`${i} Port je prasak`);
   }
   return (
