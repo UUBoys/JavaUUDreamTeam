@@ -4,14 +4,11 @@ import Button from "../components/Button";
 import { Input } from "../components/Input";
 import { Label } from "../components/Label";
 import LabelInputContainer from "../components/LabelInputContainer";
-
-export interface IAddNewProcedureModalValues {
-  name: string;
-}
+import { IAddNewProcedureFormValues } from "../utils/form-values/createNewProcedure";
 
 interface IAddNewProcedureModalProps {
-  onSubmit: (values: IAddNewProcedureModalValues) => void;
-  defaultValues?: IAddNewProcedureModalValues;
+  onSubmit: (values: IAddNewProcedureFormValues) => void;
+  defaultValues?: IAddNewProcedureFormValues;
   error?: string;
   closeModal: () => void;
 }
@@ -22,7 +19,7 @@ export const AddNewProcedureModal: React.FC<IAddNewProcedureModalProps> = ({
   closeModal,
   error,
 }) => {
-  const { register, handleSubmit } = useForm<IAddNewProcedureModalValues>({
+  const { register, handleSubmit } = useForm<IAddNewProcedureFormValues>({
     defaultValues,
   });
 
@@ -30,7 +27,7 @@ export const AddNewProcedureModal: React.FC<IAddNewProcedureModalProps> = ({
     <div className="flex w-full flex-col items-center gap-32 align-top">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex w-full flex-col items-start rounded-lg bg-white text-center shadow-xl"
+        className="flex w-full flex-col items-start rounded-lg !bg-white text-center shadow-xl"
       >
         <div className="flex w-full flex-col gap-5 p-10 pb-20">
           <h1 className="text-3xl font-bold text-primary">
@@ -52,7 +49,7 @@ export const AddNewProcedureModal: React.FC<IAddNewProcedureModalProps> = ({
                 <Button
                   type="submit"
                   size="lg"
-                  className="w-20 !bg-primary hover:bg-blue-900"
+                  className="w-20 bg-blue-800 hover:bg-blue-900"
                 >
                   Vytvořit
                 </Button>
@@ -60,7 +57,6 @@ export const AddNewProcedureModal: React.FC<IAddNewProcedureModalProps> = ({
                   onClick={() => {
                     closeModal();
                   }}
-                  color="gray"
                   size="lg"
                   className="w-20"
                   type="button"

@@ -1,21 +1,29 @@
+import moment from "moment";
 import "moment/locale/cs";
-
-import "@/styles/globals.css";
-
 import type { AppProps } from "next/app";
+import { QueryClient, QueryClientProvider } from "react-query";
+import "react-tooltip/dist/react-tooltip.css";
 
 import MainLayout from "@/Layout/Main";
-
-import moment from "moment";
-import "react-tooltip/dist/react-tooltip.css";
+import "@/styles/globals.css";
 
 moment.locale("cs");
 
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+});
+
 const App = ({ Component, pageProps }: AppProps) => {
   return (
-    <MainLayout>
-      <Component {...pageProps} />
-    </MainLayout>
+    <QueryClientProvider client={queryClient}>
+      <MainLayout>
+        <Component {...pageProps} />
+      </MainLayout>
+    </QueryClientProvider>
   );
 };
 export default App;
