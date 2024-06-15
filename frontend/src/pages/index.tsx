@@ -5,20 +5,36 @@ import "rsuite/Calendar/styles/index.css";
 
 import EventDetail, { Event } from "@/common/components/EventDetail";
 
+import { AnimatePresence } from "framer-motion";
+
 const Home = () => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
   const events: Event[] = [
-    { id: 1, date: new Date(2024, 5, 16, 13, 24, 48), title: "Colonoscopy" },
+    {
+      id: 1,
+      startDate: new Date(2024, 5, 16, 13, 25),
+      endDate: new Date(2024, 5, 16, 14, 0),
+      title: "Colonoscopy",
+    },
     {
       id: 2,
-      date: new Date(2024, 5, 18, 16, 13, 41),
+      startDate: new Date(2024, 5, 18, 16, 15),
+      endDate: new Date(2024, 5, 18, 17, 20),
       title: "Therapy Session",
     },
-    { id: 3, date: new Date(2024, 5, 21, 7, 0, 0), title: "Surgery" },
-    { id: 4, date: new Date(2024, 5, 16, 10, 30, 0), title: "Test" },
-    { id: 5, date: new Date(2024, 5, 18, 15, 25, 0), title: "Brain surgery" },
-    { id: 6, date: new Date(2024, 5, 18, 12, 30, 10), title: "Brain surgery" },
+    {
+      id: 3,
+      startDate: new Date(2024, 5, 21, 7, 0, 0),
+      endDate: new Date(2024, 5, 21, 7, 50, 0),
+      title: "Surgery",
+    },
+    {
+      id: 4,
+      startDate: new Date(2024, 5, 16, 10, 30, 0),
+      endDate: new Date(2024, 5, 16, 11, 0),
+      title: "Test",
+    },
   ];
 
   const isSameDay = (date1: Date, date2: Date) => {
@@ -31,7 +47,7 @@ const Home = () => {
 
   const renderCell = (date: Date) => {
     const dayEvents = events.filter((event) =>
-      isSameDay(new Date(event.date), date),
+      isSameDay(new Date(event.startDate), date),
     );
 
     return (
@@ -59,13 +75,15 @@ const Home = () => {
 
   return (
     <div>
-      {selectedDate && (
-        <EventDetail
-          date={selectedDate}
-          onClose={() => setSelectedDate(null)}
-          events={events}
-        />
-      )}
+      <AnimatePresence>
+        {selectedDate && (
+          <EventDetail
+            date={selectedDate}
+            onClose={() => setSelectedDate(null)}
+            events={events}
+          />
+        )}
+      </AnimatePresence>
       <div className="absolute top-0 z-[-1] h-[500px] w-full bg-primary" />
       <div className="flex w-full flex-col items-center justify-center gap-[50px] bg-transparent pt-[50px]">
         <p className="text-3xl font-bold text-white">Kalendář</p>
