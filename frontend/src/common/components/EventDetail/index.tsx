@@ -3,7 +3,6 @@ import moment from "moment";
 import React, { useState } from "react";
 import { Tooltip } from "react-tooltip";
 
-import { AddNewProcedureModal } from "@/common/modals/AddNewProcedure";
 import { AddNewReservationNotForm420MLG } from "@/common/modals/AddNewReservationModal";
 import { useModalStore } from "@/common/stores/use-modal-store";
 import { ICreateNewReservationNotFormAutismn } from "@/common/utils/form-values/createNewReservation";
@@ -24,10 +23,6 @@ type EventDetailProps = {
 
 const EventDetail = ({ date, onClose, events }: EventDetailProps) => {
   const [error, setError] = useState<string | undefined>(undefined);
-  const { openModal, closeModal } = useModalStore((s) => ({
-    openModal: s.openModal,
-    closeModal: s.closeModal,
-  }));
 
   const dayEvents = events.filter(
     (event) =>
@@ -121,12 +116,6 @@ const EventDetail = ({ date, onClose, events }: EventDetailProps) => {
             </div>
           ))}
       </div>
-      <button
-        className="rounded-md bg-white px-2 py-1 text-center text-primary transition-all hover:!bg-primary hover:!text-white"
-        onClick={openCreateNewCourseModal}
-      >
-        přidat událost
-      </button>
     </motion.div>
   );
 };
