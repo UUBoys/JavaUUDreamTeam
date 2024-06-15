@@ -1,15 +1,76 @@
-import React from "react";
+/* eslint-disable import/no-extraneous-dependencies */
+import React, { useState } from "react";
 import Calendar from "rsuite/Calendar";
 import "rsuite/Calendar/styles/index.css";
 
+import EventDetail, { Event } from "@/common/components/EventDetail";
+
 const Home = () => {
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+
+  const events: Event[] = [
+    { id: 1, date: new Date(2024, 5, 16, 13, 24, 48), title: "Colonoscopy" },
+    {
+      id: 2,
+      date: new Date(2024, 5, 18, 16, 13, 41),
+      title: "Therapy Session",
+    },
+    { id: 3, date: new Date(2024, 5, 21, 7, 0, 0), title: "Surgery" },
+    { id: 4, date: new Date(2024, 5, 16, 10, 30, 0), title: "Test" },
+    { id: 5, date: new Date(2024, 5, 18, 15, 25, 0), title: "Brain surgery" },
+    { id: 6, date: new Date(2024, 5, 18, 12, 30, 10), title: "Brain surgery" },
+  ];
+
+  const isSameDay = (date1: Date, date2: Date) => {
+    return (
+      date1.getFullYear() === date2.getFullYear() &&
+      date1.getMonth() === date2.getMonth() &&
+      date1.getDate() === date2.getDate()
+    );
+  };
+
+  const renderCell = (date: Date) => {
+    const dayEvents = events.filter((event) =>
+      isSameDay(new Date(event.date), date),
+    );
+
+    return (
+      <div className="flex flex-col gap-1">
+        {dayEvents.slice(0, 2).map((event) => (
+          <div key={event.id} className="rounded-lg bg-primary px-2 py-1">
+            <p className="truncate text-xs text-white">{event.title}</p>
+          </div>
+        ))}
+        {dayEvents.length > 2 && (
+          <div className="flex flex-row items-center gap-1">
+            <div className="size-1 rounded-full bg-warning" />
+            <p className="text-xs text-gray-500">
+              {dayEvents.length - 2} další
+            </p>
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  const handleCellEventClick = (newDate: Date) => {
+    setSelectedDate(newDate);
+  };
+
   return (
     <div>
+      {selectedDate && (
+        <EventDetail
+          date={selectedDate}
+          onClose={() => setSelectedDate(null)}
+          events={events}
+        />
+      )}
       <div className="absolute top-0 z-[-1] h-[500px] w-full bg-primary" />
-      <div className="flex w-full flex-col items-center justify-center gap-10 bg-transparent pt-[100px]">
-        <p className="text-white">input search</p>
+      <div className="flex w-full flex-col items-center justify-center gap-[50px] bg-transparent pt-[50px]">
+        <p className="text-3xl font-bold text-white">Kalendář</p>
         <div className="w-[70%] rounded-md bg-white p-4 shadow-lg">
-          <Calendar />
+          <Calendar onSelect={handleCellEventClick} renderCell={renderCell} />
         </div>
       </div>
     </div>

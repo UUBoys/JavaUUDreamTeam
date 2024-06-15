@@ -1,7 +1,14 @@
+import "moment/locale/cs";
+
+import "@/styles/globals.css";
+
 import type { AppProps } from "next/app";
 
 import MainLayout from "@/Layout/Main";
-import "@/styles/globals.css";
+
+import moment from "moment";
+
+moment.locale("cs");
 
 const App = ({ Component, pageProps }: AppProps) => {
   return (

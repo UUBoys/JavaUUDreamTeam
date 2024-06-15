@@ -25,3 +25,11 @@ body {
     text-wrap: balance;
   }
 }
+
+.rs-calendar-table-cell-selected > .rs-calendar-table-cell-content{
+  border:1px solid #6354EF !important;
+}
+.rs-calendar-table-cell-is-today > .rs-calendar-table-cell-content > .rs-calendar-table-cell-day{
+  background-color:#6354EF !important;
+
+}
