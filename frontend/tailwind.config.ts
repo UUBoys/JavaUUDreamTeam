@@ -20,7 +20,8 @@ const config: Config = {
       error:"#FD2E2F",
 
     },
-  },
-  plugins: [],
+  }, 
+  plugins: [require("@tailwindcss/forms"), require("@tailwindcss/line-clamp")],
+
 };
 export default config;
