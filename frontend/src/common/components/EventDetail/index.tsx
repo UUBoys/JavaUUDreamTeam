@@ -1,12 +1,14 @@
 import { motion, AnimatePresence } from "framer-motion";
 import moment from "moment";
 import React from "react";
+import { Tooltip } from "react-tooltip";
 
 export type Event = {
   id: number;
   startDate: Date;
   endDate: Date;
   title: string;
+  doctor: string;
 };
 
 type EventDetailProps = {
@@ -22,9 +24,17 @@ const EventDetail = ({ date, onClose, events }: EventDetailProps) => {
       event.startDate.getMonth() === date.getMonth(),
   );
 
+  const getDurationString = (startDate: Date, endDate: Date) => {
+    const duration = moment.duration(moment(endDate).diff(moment(startDate)));
+    const hours = Math.floor(duration.asHours());
+    const minutes = duration.minutes();
+    if (hours === 0) return `${minutes} minut`;
+    return `${hours} hodin ${minutes} minut`;
+  };
+
   return (
     <motion.div
-      className="fixed left-[20px] z-10 flex h-[80vh] w-[300px] flex-col gap-4 rounded-md border-l-2 border-primary bg-white p-4 shadow-lg"
+      className="fixed left-[20px] z-10 flex h-[80vh] w-[300px] flex-col gap-4 rounded-lg border-r-4 border-primary bg-white p-4 shadow-lg"
       initial={{ x: "-100%", opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
       exit={{ x: "-100%", opacity: 0 }}
@@ -55,16 +65,29 @@ const EventDetail = ({ date, onClose, events }: EventDetailProps) => {
               key={event.id}
               className="flex flex-row items-center gap-4 border-b border-gray-200 bg-white py-1"
             >
-              <div className="flex flex-col items-center justify-center">
+              <div
+                className="flex flex-col items-center justify-center"
+                data-tooltip-id="my-tooltip"
+                data-tooltip-content={getDurationString(
+                  event.startDate,
+                  event.endDate,
+                )}
+                data-tooltip-place="top"
+              >
+                <Tooltip id="my-tooltip" />
+
                 <p className="w-[45px] text-sm text-gray-400">
                   {moment(event.startDate).format("HH:mm")}
                 </p>
                 <p className="w-[45px] text-sm text-gray-400">
-                  {moment(event.startDate).format("HH:mm")}
+                  {moment(event.endDate).format("HH:mm")}
                 </p>
               </div>
               <div className="h-[18px] w-[2px] rounded-full bg-primary" />
-              <p>{event.title}</p>
+              <div className="flex flex-col">
+                <p className="text-[10px] text-gray-400">{event.doctor}</p>
+                <p className="text-sm">{event.title}</p>
+              </div>
             </div>
           ))}
       </div>

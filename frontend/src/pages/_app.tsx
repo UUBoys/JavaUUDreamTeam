@@ -7,6 +7,7 @@ import type { AppProps } from "next/app";
 import MainLayout from "@/Layout/Main";
 
 import moment from "moment";
+import "react-tooltip/dist/react-tooltip.css";
 
 moment.locale("cs");
 

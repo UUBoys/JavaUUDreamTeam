@@ -16,24 +16,28 @@ const Home = () => {
       startDate: new Date(2024, 5, 16, 13, 25),
       endDate: new Date(2024, 5, 16, 14, 0),
       title: "Colonoscopy",
+      doctor: "Kamil",
     },
     {
       id: 2,
       startDate: new Date(2024, 5, 18, 16, 15),
       endDate: new Date(2024, 5, 18, 17, 20),
       title: "Therapy Session",
+      doctor: "Kamil",
     },
     {
       id: 3,
       startDate: new Date(2024, 5, 21, 7, 0, 0),
       endDate: new Date(2024, 5, 21, 7, 50, 0),
       title: "Surgery",
+      doctor: "Jarda",
     },
     {
       id: 4,
       startDate: new Date(2024, 5, 16, 10, 30, 0),
       endDate: new Date(2024, 5, 16, 11, 0),
       title: "Test",
+      doctor: "Karel",
     },
   ];
 
