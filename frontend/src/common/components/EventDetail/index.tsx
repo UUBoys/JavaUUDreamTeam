@@ -1,11 +1,7 @@
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import moment from "moment";
-import React, { useState } from "react";
+import React from "react";
 import { Tooltip } from "react-tooltip";
-
-import { AddNewReservationNotForm420MLG } from "@/common/modals/AddNewReservationModal";
-import { useModalStore } from "@/common/stores/use-modal-store";
-import { ICreateNewReservationNotFormAutismn } from "@/common/utils/form-values/createNewReservation";
 
 export type Event = {
   id: number;
@@ -22,8 +18,6 @@ type EventDetailProps = {
 };
 
 const EventDetail = ({ date, onClose, events }: EventDetailProps) => {
-  const [error, setError] = useState<string | undefined>(undefined);
-
   const dayEvents = events.filter(
     (event) =>
       event.startDate.getDate() === date.getDate() &&
@@ -36,25 +30,6 @@ const EventDetail = ({ date, onClose, events }: EventDetailProps) => {
     const minutes = duration.minutes();
     if (hours === 0) return `${minutes} minut`;
     return `${hours} hodin ${minutes} minut`;
-  };
-
-  const createNewReservationNotFormSubmit = (
-    values: ICreateNewReservationNotFormAutismn,
-  ) => {
-    console.log(values);
-  };
-
-  const openCreateNewCourseModal = () => {
-    openModal({
-      isClosable: true,
-      content: (
-        <AddNewReservationNotForm420MLG
-          onSubmit={createNewReservationNotFormSubmit}
-          closeModal={closeModal}
-          error={error}
-        />
-      ),
-    });
   };
 
   return (

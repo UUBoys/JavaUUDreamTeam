@@ -72,7 +72,7 @@ const MultiTables: React.FC<MultiTablesProps> = ({
   procedures,
 }) => {
   const headers1 = ["Název doktora", "Procedura"];
-  const headers2 = ["Název místnosti", "Procedura"];
+  const headers2 = ["Název Sálu", "Procedura"];
   const headers3 = ["Název procedury", "Dostupnost"];
 
   const rows1 = doctors?.map((doctor) => ({
@@ -93,13 +93,13 @@ const MultiTables: React.FC<MultiTablesProps> = ({
   return (
     <Grid container spacing={2}>
       <Grid item xs={4}>
-        <BasicTable rows={rows1} headers={headers1} />
-      </Grid>
-      <Grid item xs={4}>
         <BasicTable rows={rows2} headers={headers2} />
       </Grid>
       <Grid item xs={4}>
         <BasicTable rows={rows3} headers={headers3} />
+      </Grid>
+      <Grid item xs={4}>
+        <BasicTable rows={rows1} headers={headers1} />
       </Grid>
     </Grid>
   );

@@ -33,40 +33,62 @@ const Admin = () => {
   const [error, setError] = useState<string>("");
 
   const {
+    data: procedures,
+    refetch: refetchProcedures,
+    isLoading: isLoadingProcedures,
+  } = useProceduresForAutocomplete();
+  const {
+    data: operationRooms,
+    refetch: refetchOperationRoom,
+    isLoading: isLoadingOperationRooms,
+  } = useOperationRooms();
+  const {
+    data: doctors,
+    refetch: refetchDoctors,
+    isLoading: isLoadingDoctors,
+  } = useDoctors();
+
+  const refetchAll = async () => {
+    await refetchDoctors();
+    await refetchOperationRoom();
+    await refetchProcedures();
+  };
+
+  const { mutateAsync: mutateAsyncCreateDoctor } = useCreateDoctor({
+    onSuccess: (data: unknown) => {
+      console.log("Doctor created:", data);
+      refetchAll();
+    },
+    onError: (errorPar: unknown) => {
+      refetchAll();
+      console.error("Error creating doctor:", errorPar);
+      setError(`Error creating doctor ${errorPar}`);
+    },
+  });
+
+  const {
     mutateAsync: mutateAsyncCreateProcedure,
     isLoading: isLoadingCreatingProcedure,
   } = useCreateProcedure({
     onSuccess: (data: unknown) => {
       console.log("Procedure created:", data);
+      refetchAll();
     },
     onError: (errorPar: unknown) => {
       console.error("Error creating procedure:", errorPar);
       setError(`Error creating procedure ${errorPar}`);
-    },
-  });
-
-  const { data: procedures, isLoading: isLoadingProcedures } =
-    useProceduresForAutocomplete();
-  const { data: operationRooms, isLoading: isLoadingOperationRooms } =
-    useOperationRooms();
-  const { data: doctors, isLoading: isLoadingDoctors } = useDoctors();
-
-  const { mutateAsync: mutateAsyncCreateDoctor } = useCreateDoctor({
-    onSuccess: (data: unknown) => {
-      console.log("Doctor created:", data);
-    },
-    onError: (errorPar: unknown) => {
-      console.error("Error creating doctor:", errorPar);
-      setError(`Error creating doctor ${errorPar}`);
+      refetchAll();
     },
   });
 
   const { mutateAsync: mutateAsyncCreateOperationRoom } =
     useCreateOperationRoom({
       onSuccess: (data: unknown) => {
+        refetchAll();
         console.log("Operation room created:", data);
       },
       onError: (errorPar: unknown) => {
+        refetchAll();
         console.error("Error creating operation room:", errorPar);
         setError(`Error creating operation room ${errorPar}`);
       },
@@ -83,6 +105,7 @@ const Admin = () => {
       }
 
       closeModal();
+      refetchProcedures();
       console.log("Procedure created:", res);
     } catch (errorPar: any) {
       toast.error(`Error creating procedure: ${errorPar.message}`);
@@ -100,6 +123,7 @@ const Admin = () => {
       }
 
       closeModal();
+      refetchDoctors();
       console.log("Doctor created:", res);
     } catch (errorPar: any) {
       toast.error(`Error creating doctor: ${errorPar.message}`);
@@ -117,6 +141,7 @@ const Admin = () => {
         throw new Error(res.error);
       }
       closeModal();
+      refetchOperationRoom();
       console.log("Operation room created:", res);
     } catch (errorPar: any) {
       toast.error(`Error creating operation room: ${errorPar.message}`);
