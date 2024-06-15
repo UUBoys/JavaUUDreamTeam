@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
 import { CiHospital1 } from "react-icons/ci";
 import { FaUserDoctor } from "react-icons/fa6";
@@ -10,6 +12,7 @@ import { useCreateDoctor } from "@/common/hooks/mutationHooks/useCreateDoctor";
 import { useCreateOperationRoom } from "@/common/hooks/mutationHooks/useCreateOperationRoom";
 import { useCreateProcedure } from "@/common/hooks/mutationHooks/useCreateProcedure";
 import AddNewDoctorModal from "@/common/modals/AddNewDoctorModal";
+import AddNewOperationRoom from "@/common/modals/AddNewOperationRoom";
 import {
   AddNewProcedureModal,
   IAddNewProcedureModalValues,
@@ -31,24 +34,20 @@ const Admin = () => {
   } = useCreateProcedure({
     onSuccess: (data: unknown) => {
       console.log("Procedure created:", data);
-      // Perform any additional actions on success
     },
     onError: (errorPar: unknown) => {
       console.error("Error creating procedure:", errorPar);
       setError(`Error creating procedure ${errorPar}`);
-      // Perform any additional actions on error
     },
   });
 
   const { mutateAsync: mutateAsyncCreateDoctor } = useCreateDoctor({
     onSuccess: (data: unknown) => {
       console.log("Doctor created:", data);
-      // Perform any additional actions on success
     },
     onError: (errorPar: unknown) => {
       console.error("Error creating doctor:", errorPar);
       setError(`Error creating doctor ${errorPar}`);
-      // Perform any additional actions on error
     },
   });
 
@@ -56,56 +55,78 @@ const Admin = () => {
     useCreateOperationRoom({
       onSuccess: (data: unknown) => {
         console.log("Operation room created:", data);
-        // Perform any additional actions on success
       },
       onError: (errorPar: unknown) => {
         console.error("Error creating operation room:", errorPar);
         setError(`Error creating operation room ${errorPar}`);
-        // Perform any additional actions on error
       },
     });
 
   const createNewProcedureFormSubmit = async (
     values: IAddNewProcedureModalValues,
   ) => {
-    const res = await mutateAsyncCreateProcedure(values);
+    try {
+      const res: any = (await mutateAsyncCreateProcedure(values)) as any;
 
-    toast.success(`Procedůra ${res.name} byla úspěšně vytvořena!`);
-    closeModal();
-    console.log("Procedure created:", res);
+      if (res.error) {
+        throw new Error(res.error);
+      }
+
+      toast.success(`Procedůra ${res.name} byla úspěšně vytvořena!`);
+      closeModal();
+      console.log("Procedure created:", res);
+    } catch (errorPar: any) {
+      toast.error(`Error creating procedure: ${errorPar.message}`);
+      console.error("Error creating procedure:", error);
+    }
   };
   const createNewDoctorFormSubmit = async (
     values: ICreateNewDoctorFormValues,
   ) => {
-    console.log(values);
-    return;
-    const res = await mutateAsyncCreateDoctor(values);
+    try {
+      const res = (await mutateAsyncCreateDoctor(values)) as any;
 
-    toast.success(
-      `Doktor ${res.firstName} ${res.lastName} byl úspěšně vytvořen!`,
-    );
-    closeModal();
-    console.log("Doctor created:", res);
+      if (res.error) {
+        throw new Error(res.error);
+      }
+
+      toast.success(
+        `Doktor ${res.firstName} ${res.lastName} byl úspěšně vytvořen!`,
+      );
+      closeModal();
+      console.log("Doctor created:", res);
+    } catch (errorPar: any) {
+      toast.error(`Error creating doctor: ${errorPar.message}`);
+      console.error("Error creating doctor:", error);
+    }
   };
 
   const createNewOperationRoomFormSubmit = async (
     values: ICreateNewOperationRoomFormValues,
   ) => {
-    const res = await mutateAsyncCreateOperationRoom(values);
+    try {
+      const res = (await mutateAsyncCreateOperationRoom(values)) as any;
 
-    toast.success(`Operační místnost ${res.name} byla úspěšně vytvořena!`);
-    closeModal();
-    console.log("Operation room created:", res);
+      if (res.error) {
+        throw new Error(res.error);
+      }
+
+      toast.success(`Operační místnost ${res.name} byla úspěšně vytvořena!`);
+      closeModal();
+      console.log("Operation room created:", res);
+    } catch (errorPar: any) {
+      toast.error(`Error creating operation room: ${errorPar.message}`);
+      console.error("Error creating operation room:", error);
+    }
   };
 
-  const openCreateNewCourseModal = () => {
+  const openCreateNewProcedureModal = () => {
     openModal({
       isClosable: true,
       content: (
         <AddNewProcedureModal
           onSubmit={createNewProcedureFormSubmit}
           closeModal={closeModal}
-          error={error}
         />
       ),
     });
@@ -118,7 +139,18 @@ const Admin = () => {
         <AddNewDoctorModal
           onSubmit={createNewDoctorFormSubmit}
           closeModal={closeModal}
-          error={error}
+        />
+      ),
+    });
+  };
+
+  const openCreateNewOperationRoom = () => {
+    openModal({
+      isClosable: true,
+      content: (
+        <AddNewOperationRoom
+          onSubmit={createNewOperationRoomFormSubmit}
+          closeModal={closeModal}
         />
       ),
     });
@@ -130,12 +162,15 @@ const Admin = () => {
       <div className="flex w-full flex-col items-center justify-center gap-10 bg-transparent pt-[100px]">
         <p className="text-6xl font-bold text-white">Admin</p>
         <div className="flex w-[70%] flex-col justify-between gap-10 rounded-md p-4 sm:flex-row">
-          <button className="group flex min-h-[300px] w-full cursor-pointer flex-col items-center justify-center rounded-lg border-white bg-white text-4xl font-bold shadow-lg transition-all hover:scale-105 hover:border-4 hover:bg-primary hover:text-white">
+          <button
+            onClick={openCreateNewOperationRoom}
+            className="group flex min-h-[300px] w-full cursor-pointer flex-col items-center justify-center rounded-lg border-white bg-white text-4xl font-bold shadow-lg transition-all hover:scale-105 hover:border-4 hover:bg-primary hover:text-white"
+          >
             <CiHospital1 className="size-14 text-primary transition-all group-hover:text-white" />
             Sály
           </button>
           <button
-            onClick={openCreateNewCourseModal}
+            onClick={openCreateNewProcedureModal}
             className="group flex min-h-[300px] w-full cursor-pointer flex-col items-center justify-center rounded-lg border-white bg-white text-4xl font-bold shadow-lg transition-all hover:scale-105 hover:border-4 hover:bg-primary hover:text-white"
           >
             <LiaProceduresSolid className="size-14 text-primary transition-all group-hover:text-white" />
