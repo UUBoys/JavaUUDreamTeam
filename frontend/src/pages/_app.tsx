@@ -2,6 +2,8 @@ import moment from "moment";
 import "moment/locale/cs";
 import type { AppProps } from "next/app";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "react-tooltip/dist/react-tooltip.css";
 
 import MainLayout from "@/Layout/Main";
@@ -20,6 +22,8 @@ const queryClient = new QueryClient({
 const App = ({ Component, pageProps }: AppProps) => {
   return (
     <QueryClientProvider client={queryClient}>
+      <ToastContainer />
+
       <MainLayout>
         <Component {...pageProps} />
       </MainLayout>

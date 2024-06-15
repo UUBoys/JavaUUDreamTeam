@@ -1,5 +1,5 @@
 import { Autocomplete, TextField } from "@mui/material";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 
 import Button from "../components/Button";
 import { Input } from "../components/Input";
@@ -12,7 +12,6 @@ import { ICreateNewDoctorFormValues } from "../utils/form-values/createNewDoctor
 interface IAddNewDoctorModalProps {
   onSubmit: (values: ICreateNewDoctorFormValues) => void;
   defaultValues?: ICreateNewDoctorFormValues;
-  error?: string;
   closeModal: () => void;
 }
 
@@ -20,13 +19,13 @@ export const AddNewDoctorModal: React.FC<IAddNewDoctorModalProps> = ({
   onSubmit,
   defaultValues,
   closeModal,
-  error,
 }) => {
-  const { register, handleSubmit } = useForm<ICreateNewDoctorFormValues>({
-    defaultValues,
-  });
+  const { register, handleSubmit, setValue, control } =
+    useForm<ICreateNewDoctorFormValues>({
+      defaultValues,
+    });
   const {
-    data: procedures,
+    data: proceduresForAutocomplete,
     isLoading,
     isError,
   } = useProceduresForAutocomplete();
@@ -56,24 +55,34 @@ export const AddNewDoctorModal: React.FC<IAddNewDoctorModalProps> = ({
             </div>
             <LabelInputContainer className="mb-8">
               <Label htmlFor="twitterpassword">Procedůry</Label>
-              <Autocomplete
-                multiple
-                id="tags-standard"
-                {...register("procedures")}
-                options={procedures ?? []}
-                getOptionLabel={(option) => option.name}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    variant="standard"
-                    placeholder="Vyberte procedůry"
+              <Controller
+                name="procedures"
+                control={control}
+                render={({ field: { onChange, value } }) => (
+                  <Autocomplete
+                    multiple
+                    id="tags-standard"
+                    options={proceduresForAutocomplete ?? []}
+                    getOptionLabel={(option) => option}
+                    value={value}
+                    onChange={(event, newValue) => {
+                      onChange(newValue.map((option) => option));
+                      setValue(
+                        "procedures",
+                        newValue.map((option) => option),
+                      );
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        variant="standard"
+                        placeholder="Vyberte procedůry"
+                      />
+                    )}
                   />
                 )}
               />
             </LabelInputContainer>
-            {error !== "" && (
-              <p className="mt-2 text-xl italic text-red-500">{error}</p>
-            )}
           </div>
 
           <div className="flex w-full items-center justify-center gap-6">

@@ -12,7 +12,6 @@ import { ICreateNewOperationRoomFormValues } from "../utils/form-values/createNe
 interface IAddNewOperationRoomModalProps {
   onSubmit: (values: ICreateNewOperationRoomFormValues) => void;
   defaultValues?: ICreateNewOperationRoomFormValues;
-  error?: string;
   closeModal: () => void;
 }
 
@@ -20,13 +19,11 @@ export const AddNewOperationRoom: React.FC<IAddNewOperationRoomModalProps> = ({
   onSubmit,
   defaultValues,
   closeModal,
-  error,
 }) => {
-  const { register, handleSubmit, setValue, control, getValues } =
+  const { register, handleSubmit, setValue, control } =
     useForm<ICreateNewOperationRoomFormValues>({
       defaultValues,
     });
-
   const {
     data: proceduresForAutocomplete,
     isLoading,
@@ -49,9 +46,6 @@ export const AddNewOperationRoom: React.FC<IAddNewOperationRoomModalProps> = ({
             <LabelInputContainer className="mb-8">
               <Label htmlFor="twitterpassword">Název sálu</Label>
               <Input {...register("name")} />
-              {error !== "" && (
-                <p className="mt-2 text-xl italic text-red-500">{error}</p>
-              )}
             </LabelInputContainer>
             <LabelInputContainer className="mb-8">
               <Label htmlFor="twitterpassword">Procedůry</Label>
@@ -62,14 +56,14 @@ export const AddNewOperationRoom: React.FC<IAddNewOperationRoomModalProps> = ({
                   <Autocomplete
                     multiple
                     id="tags-standard"
-                    options={proceduresForAutocomplete}
-                    getOptionLabel={(option) => option.name}
+                    options={proceduresForAutocomplete ?? []}
+                    getOptionLabel={(option) => option}
                     value={value}
                     onChange={(event, newValue) => {
-                      onChange(newValue.map((option) => option.name));
+                      onChange(newValue.map((option) => option));
                       setValue(
                         "procedures",
-                        newValue.map((option) => option.name),
+                        newValue.map((option) => option),
                       );
                     }}
                     renderInput={(params) => (
@@ -91,7 +85,7 @@ export const AddNewOperationRoom: React.FC<IAddNewOperationRoomModalProps> = ({
                 <Button
                   type="submit"
                   size="lg"
-                  className="w-20 bg-blue-800 hover:bg-blue-900"
+                  className="w-20 !bg-primary hover:bg-blue-900"
                 >
                   Vytvořit
                 </Button>
@@ -99,6 +93,7 @@ export const AddNewOperationRoom: React.FC<IAddNewOperationRoomModalProps> = ({
                   onClick={() => {
                     closeModal();
                   }}
+                  color="gray"
                   size="lg"
                   className="w-20"
                   type="button"

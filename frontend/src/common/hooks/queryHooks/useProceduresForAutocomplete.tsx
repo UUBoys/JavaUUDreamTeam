@@ -7,8 +7,8 @@ const fetchProcedures = async (): Promise<string[]> => {
     `${process.env.NEXT_PUBLIC_API_ENDPOINT}/procedure`,
   );
   if (!data.items) return [];
-  const parsedData: string[] = data.items.map((procedure: string) => {
-    return procedure;
+  const parsedData: string[] = data.items.map((procedure: { name: string }) => {
+    return procedure.name;
   });
   return parsedData;
 };

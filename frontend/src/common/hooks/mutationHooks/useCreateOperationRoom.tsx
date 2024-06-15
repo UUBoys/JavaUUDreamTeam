@@ -13,7 +13,7 @@ const createOperationRoom = async (
   newOperationRoom: ICreateNewOperationRoomFormValues,
 ) => {
   const { data } = await axios.post(
-    `${process.env.NEXT_PUBLIC_API_ENDPOINT}/operation-room`,
+    `${process.env.NEXT_PUBLIC_API_ENDPOINT}/operationRoom`,
     newOperationRoom,
   );
   return data;

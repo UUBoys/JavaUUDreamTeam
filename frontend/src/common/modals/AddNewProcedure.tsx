@@ -12,7 +12,6 @@ export interface IAddNewProcedureModalValues {
 interface IAddNewProcedureModalProps {
   onSubmit: (values: IAddNewProcedureModalValues) => void;
   defaultValues?: IAddNewProcedureModalValues;
-  error?: string;
   closeModal: () => void;
 }
 
@@ -20,7 +19,6 @@ export const AddNewProcedureModal: React.FC<IAddNewProcedureModalProps> = ({
   onSubmit,
   defaultValues,
   closeModal,
-  error,
 }) => {
   const { register, handleSubmit } = useForm<IAddNewProcedureModalValues>({
     defaultValues,
@@ -40,9 +38,6 @@ export const AddNewProcedureModal: React.FC<IAddNewProcedureModalProps> = ({
             <LabelInputContainer className="mb-8">
               <Label htmlFor="twitterpassword">Název procedůry</Label>
               <Input {...register("name")} />
-              {error !== "" && (
-                <p className="mt-2 text-xl italic text-red-500">{error}</p>
-              )}
             </LabelInputContainer>
           </div>
 
