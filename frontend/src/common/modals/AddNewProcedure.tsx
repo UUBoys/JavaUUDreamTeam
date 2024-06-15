@@ -4,15 +4,14 @@ import Button from "../components/Button";
 import { Input } from "../components/Input";
 import { Label } from "../components/Label";
 import LabelInputContainer from "../components/LabelInputContainer";
-
-import { ICreateNewProcedureNotForm } from "@/common/utils/form-values/ICreateNewProcedure";
+import { IAddNewProcedureFormValues } from "../utils/form-values/createNewProcedure";
 
 export interface IAddNewProcedureModalValues {
   name: string;
 }
 
 interface IAddNewProcedureModalProps {
-  onSubmit: (values: ICreateNewProcedureNotForm) => void;
+  onSubmit: (values: IAddNewProcedureFormValues) => void;
   defaultValues?: IAddNewProcedureModalValues;
   closeModal: () => void;
 }

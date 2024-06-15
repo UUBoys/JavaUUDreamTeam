@@ -6,7 +6,7 @@ import { Tooltip } from "react-tooltip";
 import { AddNewProcedureModal } from "@/common/modals/AddNewProcedure";
 import { AddNewReservationNotForm420MLG } from "@/common/modals/AddNewReservationModal";
 import { useModalStore } from "@/common/stores/use-modal-store";
-import { ICreateNewProcedureNotForm } from "@/common/utils/form-values/ICreateNewProcedure";
+import { ICreateNewReservationNotFormAutismn } from "@/common/utils/form-values/createNewReservation";
 
 export type Event = {
   id: number;
@@ -44,7 +44,7 @@ const EventDetail = ({ date, onClose, events }: EventDetailProps) => {
   };
 
   const createNewReservationNotFormSubmit = (
-    values: ICreateNewProcedureNotForm,
+    values: ICreateNewReservationNotFormAutismn,
   ) => {
     console.log(values);
   };

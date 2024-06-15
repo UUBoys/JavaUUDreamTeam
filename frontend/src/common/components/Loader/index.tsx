@@ -34,15 +34,13 @@ const Loader: React.FC<LoaderProps> = ({
   if (isEnded) return null;
 
   if (!isCustom && (isLoading || isSuccess || isError)) {
-    if (isLoading) {
-      return (
-        <div className="absolute left-0 top-0 z-[1000]">
-          <div className="fixed flex h-screen w-full flex-col items-center justify-center bg-black/50 backdrop-blur-md transition-all">
-            <Lottie animationData={docOClockAnimation} loop className="w-1/4" />
-          </div>
+    return (
+      <div className="absolute left-0 top-0 z-[1000]">
+        <div className="fixed flex h-screen w-full flex-col items-center justify-center bg-black/50 backdrop-blur-md transition-all">
+          <Lottie animationData={docOClockAnimation} loop className="w-1/4" />
         </div>
-      );
-    }
+      </div>
+    );
   }
   if (!children) {
     return null;

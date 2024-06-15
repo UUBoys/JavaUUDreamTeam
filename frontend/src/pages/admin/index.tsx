@@ -8,9 +8,13 @@ import { toast } from "react-toastify";
 import "rsuite/Calendar/styles/index.css";
 
 import Loader from "@/common/components/Loader";
+import MultiTables from "@/common/components/Table";
 import { useCreateDoctor } from "@/common/hooks/mutationHooks/useCreateDoctor";
 import { useCreateOperationRoom } from "@/common/hooks/mutationHooks/useCreateOperationRoom";
 import { useCreateProcedure } from "@/common/hooks/mutationHooks/useCreateProcedure";
+import { useDoctors } from "@/common/hooks/queryHooks/useDoctors";
+import { useOperationRooms } from "@/common/hooks/queryHooks/useOperationRooms";
+import { useProceduresForAutocomplete } from "@/common/hooks/queryHooks/useProceduresForAutocomplete";
 import AddNewDoctorModal from "@/common/modals/AddNewDoctorModal";
 import AddNewOperationRoom from "@/common/modals/AddNewOperationRoom";
 import {
@@ -40,6 +44,12 @@ const Admin = () => {
       setError(`Error creating procedure ${errorPar}`);
     },
   });
+
+  const { data: procedures, isLoading: isLoadingProcedures } =
+    useProceduresForAutocomplete();
+  const { data: operationRooms, isLoading: isLoadingOperationRooms } =
+    useOperationRooms();
+  const { data: doctors, isLoading: isLoadingDoctors } = useDoctors();
 
   const { mutateAsync: mutateAsyncCreateDoctor } = useCreateDoctor({
     onSuccess: (data: unknown) => {
@@ -72,7 +82,6 @@ const Admin = () => {
         throw new Error(res.error);
       }
 
-      toast.success(`Procedůra ${res.name} byla úspěšně vytvořena!`);
       closeModal();
       console.log("Procedure created:", res);
     } catch (errorPar: any) {
@@ -90,9 +99,6 @@ const Admin = () => {
         throw new Error(res.error);
       }
 
-      toast.success(
-        `Doktor ${res.firstName} ${res.lastName} byl úspěšně vytvořen!`,
-      );
       closeModal();
       console.log("Doctor created:", res);
     } catch (errorPar: any) {
@@ -110,8 +116,6 @@ const Admin = () => {
       if (res.error) {
         throw new Error(res.error);
       }
-
-      toast.success(`Operační místnost ${res.name} byla úspěšně vytvořena!`);
       closeModal();
       console.log("Operation room created:", res);
     } catch (errorPar: any) {
@@ -157,7 +161,14 @@ const Admin = () => {
   };
   return (
     <div>
-      <Loader isLoading={isLoadingCreatingProcedure} />
+      <Loader
+        isLoading={
+          isLoadingCreatingProcedure ||
+          isLoadingDoctors ||
+          isLoadingProcedures ||
+          isLoadingOperationRooms
+        }
+      />
       <div className="absolute top-0 z-[-1] h-[500px] w-full bg-primary" />
       <div className="flex w-full flex-col items-center justify-center gap-10 bg-transparent pt-[100px]">
         <p className="text-6xl font-bold text-white">Admin</p>
@@ -183,6 +194,13 @@ const Admin = () => {
             <FaUserDoctor className="size-14 text-primary transition-all group-hover:text-white" />
             Doktoři
           </button>
+        </div>
+        <div>
+          <MultiTables
+            doctors={doctors ?? []}
+            operationRooms={operationRooms ?? []}
+            procedures={procedures ?? []}
+          />
         </div>
       </div>
     </div>

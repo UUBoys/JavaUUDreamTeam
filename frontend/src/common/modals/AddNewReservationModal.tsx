@@ -8,11 +8,11 @@ import LabelInputContainer from "../components/LabelInputContainer";
 import Loader from "../components/Loader";
 import { useProceduresForAutocomplete } from "../hooks/queryHooks/useProceduresForAutocomplete";
 
-import { ICreateNewProcedureNotForm } from "@/common/utils/form-values/ICreateNewProcedure";
+import { ICreateNewReservationNotFormAutismn } from "@/common/utils/form-values/createNewReservation";
 
 interface IAddNewDoctorModalProps {
-  onSubmit: (values: ICreateNewProcedureNotForm) => void;
-  defaultValues?: ICreateNewProcedureNotForm;
+  onSubmit: (values: ICreateNewReservationNotFormAutismn) => void;
+  defaultValues?: ICreateNewReservationNotFormAutismn;
   error?: string;
   closeModal: () => void;
 }
@@ -20,9 +20,10 @@ interface IAddNewDoctorModalProps {
 export const AddNewReservationNotForm420MLG: React.FC<
   IAddNewDoctorModalProps
 > = ({ onSubmit, defaultValues, closeModal, error }) => {
-  const { register, handleSubmit } = useForm<ICreateNewProcedureNotForm>({
-    defaultValues,
-  });
+  const { register, handleSubmit } =
+    useForm<ICreateNewReservationNotFormAutismn>({
+      defaultValues,
+    });
   const {
     data: procedures,
     isLoading,
