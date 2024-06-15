@@ -1,7 +1,12 @@
 import { motion, AnimatePresence } from "framer-motion";
 import moment from "moment";
-import React from "react";
+import React, { useState } from "react";
 import { Tooltip } from "react-tooltip";
+
+import { AddNewProcedureModal } from "@/common/modals/AddNewProcedure";
+import { AddNewReservationNotForm420MLG } from "@/common/modals/AddNewReservationModal";
+import { useModalStore } from "@/common/stores/use-modal-store";
+import { ICreateNewProcedureNotForm } from "@/common/utils/form-values/ICreateNewProcedure";
 
 export type Event = {
   id: number;
@@ -18,6 +23,12 @@ type EventDetailProps = {
 };
 
 const EventDetail = ({ date, onClose, events }: EventDetailProps) => {
+  const [error, setError] = useState<string | undefined>(undefined);
+  const { openModal, closeModal } = useModalStore((s) => ({
+    openModal: s.openModal,
+    closeModal: s.closeModal,
+  }));
+
   const dayEvents = events.filter(
     (event) =>
       event.startDate.getDate() === date.getDate() &&
@@ -32,9 +43,28 @@ const EventDetail = ({ date, onClose, events }: EventDetailProps) => {
     return `${hours} hodin ${minutes} minut`;
   };
 
+  const createNewReservationNotFormSubmit = (
+    values: ICreateNewProcedureNotForm,
+  ) => {
+    console.log(values);
+  };
+
+  const openCreateNewCourseModal = () => {
+    openModal({
+      isClosable: true,
+      content: (
+        <AddNewReservationNotForm420MLG
+          onSubmit={createNewReservationNotFormSubmit}
+          closeModal={closeModal}
+          error={error}
+        />
+      ),
+    });
+  };
+
   return (
     <motion.div
-      className="fixed left-[20px] z-10 flex h-[80vh] w-[300px] flex-col gap-4 rounded-lg border-r-4 border-primary bg-white p-4 shadow-lg"
+      className="fixed left-[20px] z-10 flex h-[80vh] w-[300px] flex-col gap-4 rounded-lg border-r-4 border-primary bg-[rgba(255,255,255,0.92)] p-4 shadow-lg backdrop-blur"
       initial={{ x: "-100%", opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
       exit={{ x: "-100%", opacity: 0 }}
@@ -63,7 +93,7 @@ const EventDetail = ({ date, onClose, events }: EventDetailProps) => {
           dayEvents.map((event: Event) => (
             <div
               key={event.id}
-              className="flex flex-row items-center gap-4 border-b border-gray-200 bg-white py-1"
+              className="mb-3 flex flex-row items-center gap-4 rounded-md border-b border-gray-200 bg-white px-3 py-2 shadow-md"
             >
               <div
                 className="flex flex-col items-center justify-center"
@@ -91,7 +121,10 @@ const EventDetail = ({ date, onClose, events }: EventDetailProps) => {
             </div>
           ))}
       </div>
-      <button className="rounded-md bg-white px-2 py-1 text-center text-primary transition-all hover:!bg-primary hover:!text-white">
+      <button
+        className="rounded-md bg-white px-2 py-1 text-center text-primary transition-all hover:!bg-primary hover:!text-white"
+        onClick={openCreateNewCourseModal}
+      >
         přidat událost
       </button>
     </motion.div>

@@ -5,12 +5,14 @@ import { Input } from "../components/Input";
 import { Label } from "../components/Label";
 import LabelInputContainer from "../components/LabelInputContainer";
 
+import { ICreateNewProcedureNotForm } from "@/common/utils/form-values/ICreateNewProcedure";
+
 export interface IAddNewProcedureModalValues {
   name: string;
 }
 
 interface IAddNewProcedureModalProps {
-  onSubmit: (values: IAddNewProcedureModalValues) => void;
+  onSubmit: (values: ICreateNewProcedureNotForm) => void;
   defaultValues?: IAddNewProcedureModalValues;
   error?: string;
   closeModal: () => void;
