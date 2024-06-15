@@ -41,7 +41,7 @@ const Navbar = () => {
   }, [asPath]);
 
   return (
-    <div className="mx-auto mt-6 flex w-[90%] items-center justify-between rounded-md bg-white px-8 py-2 shadow-md">
+    <div className="fixed left-[5%] top-0 mt-6 flex w-[90%] items-center justify-between rounded-md bg-white px-8 py-2 shadow-md">
       {/* eslint-disable-next-line react/no-unescaped-entities */}
       <h1 className="font-bold text-primary">DocO'Clock</h1>
       <div className="flex items-center gap-8">
@@ -50,10 +50,10 @@ const Navbar = () => {
             key={link.id}
             onClick={() => handleLinkClick(link.href)}
             className={clsx(
-              "flex cursor-pointer flex-row items-center justify-center gap-2 px-3 py-2",
+              "flex cursor-pointer flex-row items-center justify-center gap-2 rounded-[2px] border-b-2 border-b-transparent px-3 py-2 transition-all",
               currentUrl === link.href
-                ? "border-b border-primary text-primary"
-                : "text-gray-400",
+                ? "!border-primary text-primary"
+                : "text-gray-400 hover:!border-gray-400",
             )}
           >
             {link.icon}

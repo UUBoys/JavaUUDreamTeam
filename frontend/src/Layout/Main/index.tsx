@@ -1,14 +1,14 @@
-import React from 'react'
+import React from "react";
 
-import Navbar from '@/common/components/Navbar'
+import Navbar from "@/common/components/Navbar";
 
-function MainLayout({children}: {children: React.ReactNode}) {
-    return (
-        <React.Fragment>
-            <Navbar/>
-            {children}
-        </React.Fragment>
-    )
-}
+const MainLayout = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <>
+      <Navbar />
+      <div className="mt-[100px]">{children}</div>
+    </>
+  );
+};
 
-export default MainLayout
+export default MainLayout;
